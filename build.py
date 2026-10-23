@@ -46,7 +46,7 @@ FAQ = [
  ("Will it make a mess in my house?",
   "No. Technicians wear shoe coverings, floors are protected with coverings, and corner guards protect your drywall and trim. The home's air is HEPA-filtered to 0.3 microns during the job."),
  ("Do you serve my town?",
-  "We serve Madison and the surrounding Dane and Columbia County communities including Sun Prairie, Waunakee, Middleton, Verona, Fitchburg, DeForest, Stoughton, Poynette, Portage, Lodi and Columbus. Call or text " + PHONE + " if you are nearby but not listed."),
+  "We serve Madison and the surrounding Dane and Columbia County communities including " + ", ".join(n for _, n, *_ in CITIES[1:-1]) + " and " + CITIES[-1][1] + ". Call or text " + PHONE + " if you are nearby but not listed."),
  ("Can you test for mold or mycotoxins before cleaning?",
   "Yes. Indoor air quality services include pollutant assessment, mycotoxin testing, humidity assessment and environmental testing. Nick tests and reports what the results show; he does not diagnose or treat health conditions."),
 ]
@@ -407,7 +407,7 @@ area_body = f'''
 <p class="small muted" style="margin-top:.75rem">Ducts On Call Inc. · N3303 County Highway J, Poynette, WI 53955 · Service calls across Dane and Columbia County.</p></div></section>
 '''
 urls.append(render("service-area.html","Service Area – Air Duct Cleaning in Dane & Columbia County, WI | Ducts On Call",
-  "Ducts On Call serves Madison, Sun Prairie, Waunakee, Middleton, Verona, Fitchburg, DeForest, Stoughton, Poynette, Portage, Lodi and Columbus, Wisconsin with NADCA-certified air duct and dryer vent cleaning.",
+  "Ducts On Call serves " + ", ".join(n for _, n, *_ in CITIES[:-1]) + " and " + CITIES[-1][1] + ", Wisconsin with NADCA-certified air duct and dryer vent cleaning.",
   area_body, [business_ld()], current="area"))
 
 for slug, name, county, blurb, neigh in CITIES:
