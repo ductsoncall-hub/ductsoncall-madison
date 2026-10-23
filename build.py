@@ -52,7 +52,7 @@ HEAD = '''<!DOCTYPE html>
 <meta property="og:type" content="website">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
-<meta property="og:image" content="{base}assets/hero-living-room.jpg">
+<meta property="og:image" content="{ogimg}">
 <meta property="og:url" content="{canon}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="geo.region" content="US-WI"><meta name="geo.placename" content="{place}">
@@ -70,7 +70,10 @@ HEAD = '''<!DOCTYPE html>
       <a href="{rel}air-duct-cleaning.html"{c_adc}>Air duct cleaning</a>
       <a href="{rel}dryer-vent-cleaning.html"{c_dvc}>Dryer vents</a>
       <a href="{rel}indoor-air-quality.html"{c_iaq}>Indoor air quality</a>
+      <a href="{rel}commercial.html"{c_com}>Commercial</a>
       <a href="{rel}service-area.html"{c_area}>Service area</a>
+      <a href="{rel}guides/index.html"{c_guides}>Guides</a>
+      <a href="{rel}reviews.html"{c_rev}>Reviews</a>
       <a href="{rel}faq.html"{c_faq}>FAQ</a>
     </nav>
     <a class="btn phone" href="tel:{tel}">Call or text {phone}</a>
@@ -103,7 +106,7 @@ FOOT = '''
     </div>
     <div>
       <p class="small"><strong>Services</strong></p>
-      <p class="small"><a href="{rel}air-duct-cleaning.html">Air duct cleaning</a><br><a href="{rel}dryer-vent-cleaning.html">Dryer vent cleaning</a><br><a href="{rel}indoor-air-quality.html">Indoor air quality &amp; mycotoxin testing</a></p>
+      <p class="small"><a href="{rel}air-duct-cleaning.html">Air duct cleaning</a><br><a href="{rel}dryer-vent-cleaning.html">Dryer vent cleaning</a><br><a href="{rel}indoor-air-quality.html">Indoor air quality &amp; mycotoxin testing</a><br><a href="{rel}commercial.html">Commercial &amp; industrial</a><br><a href="{rel}gallery.html">Before &amp; after</a><br><a href="{rel}guides/index.html">Homeowner guides</a><br><a href="{rel}reviews.html">Reviews</a></p>
     </div>
     <div>
       <p class="small"><strong>Service area</strong></p>
@@ -157,12 +160,12 @@ def faq_html(items):
 def citylinks(rel):
     return " · ".join(f'<a href="{rel}areas/{s}.html">{n}</a>' for s, n, *_ in CITIES)
 
-def render(fn, title, desc, body, ld, current="", place="Madison, Wisconsin", sub=False):
+def render(fn, title, desc, body, ld, current="", place="Madison, Wisconsin", sub=False, ogimg=None):
     rel = "../" if sub else "./"
     canon = BASE + fn
-    cur = {k: (' aria-current="page"' if current == k else '') for k in ["adc","dvc","iaq","area","faq"]}
-    html = HEAD.format(title=title, desc=desc, canon=canon, base=BASE, rel=rel, place=place, ld=json.dumps({"@context": "https://schema.org", "@graph": ld}, ensure_ascii=False), tel=TEL, phone=PHONE,
-                       c_adc=cur["adc"], c_dvc=cur["dvc"], c_iaq=cur["iaq"], c_area=cur["area"], c_faq=cur["faq"])
+    cur = {k: (' aria-current="page"' if current == k else '') for k in ["adc","dvc","iaq","area","faq","com","guides","rev"]}
+    html = HEAD.format(title=title, desc=desc, canon=canon, base=BASE, rel=rel, place=place, ogimg=(ogimg or BASE+"assets/og-ductsoncall.jpg"), ld=json.dumps({"@context": "https://schema.org", "@graph": ld}, ensure_ascii=False), tel=TEL, phone=PHONE,
+                       c_adc=cur["adc"], c_dvc=cur["dvc"], c_iaq=cur["iaq"], c_area=cur["area"], c_faq=cur["faq"], c_com=cur["com"], c_guides=cur["guides"], c_rev=cur["rev"])
     html += body + FOOT.format(tel=TEL, phone=PHONE, rel=rel, citylinks=citylinks(rel))
     path = os.path.join(OUT, fn); os.makedirs(os.path.dirname(path), exist_ok=True)
     open(path, "w").write(html)
@@ -256,6 +259,34 @@ home_body = f'''
   </div>
 </section>
 
+<section class="block" id="proof">
+  <div class="wrap grid two">
+    <div>
+      <p class="eyebrow">What customers say</p>
+      <h2>5.0 stars, everywhere we're listed.</h2>
+      <blockquote class="quote">“Very professional and courteous. Nick, Rocko, and Kim from Poynette came out to our house to clean our vents. They were very knowledgeable and took the time to explain everything to us. It was very apparent that they cared about the quality of their work, as well as the health and well-being of my family.”<footer>Houzz review, July 2021</footer></blockquote>
+      <p><a class="btn ghost" href="./reviews.html">Read reviews and leave yours</a></p>
+    </div>
+    <div class="ba">
+      <figure><img src="./assets/job-01-before.jpg" alt="Inside a return duct before cleaning: heavy grey dust and debris on every surface" width="600" height="400" loading="lazy"><figcaption>Before · Madison return duct</figcaption></figure>
+      <figure><img src="./assets/job-01-after.jpg" alt="Inside the same return duct after cleaning: bare clean sheet metal" width="600" height="400" loading="lazy"><figcaption>After</figcaption></figure>
+      <p class="small"><a href="./gallery.html">More before &amp; after →</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="guides">
+  <div class="wrap">
+    <div class="section-head"><p class="eyebrow">Homeowner guides</p><h2>Read before you book anyone.</h2></div>
+    <div class="cards three">
+      <a class="card" href="./guides/air-duct-cleaning-cost-madison.html"><h3>What air duct cleaning costs in Madison</h3><p>Realistic ranges, what drives the price, and the $99 “whole house special” trap.</p><span class="more">Read →</span></a>
+      <a class="card" href="./guides/signs-air-ducts-need-cleaning.html"><h3>7 signs your air ducts need cleaning</h3><p>And three that are commonly misread. Based on EPA and NADCA guidance.</p><span class="more">Read →</span></a>
+      <a class="card" href="./guides/dryer-vent-fire-safety.html"><h3>Dryer vent fire safety</h3><p>Why lint is the leading factor in dryer fires and the five-minute check.</p><span class="more">Read →</span></a>
+    </div>
+    <p style="margin-top:1.5rem"><a href="./guides/index.html">All guides →</a></p>
+  </div>
+</section>
+
 <section class="block" id="faq">
   <div class="wrap narrow">
     <div class="section-head"><p class="eyebrow">Questions</p><h2>Straight answers.</h2></div>
@@ -342,6 +373,9 @@ area_body = f'''
 <p class="lede">Ducts On Call is based in Poynette and works by appointment and referral throughout Dane and Columbia County. Pick your community for local details.</p></div></section>
 <section class="block"><div class="wrap"><div class="citygrid">{"".join(f'<a href="./areas/{s}.html">{n}<span>{c} County</span></a>' for s,n,c,*_ in CITIES)}</div>
 <p class="note" style="margin-top:2rem">Not listed? We regularly travel a little further. Call or text <a href="tel:{TEL}">{PHONE}</a>.</p></div></section>
+<section class="block alt"><div class="wrap"><div class="section-head"><p class="eyebrow">Based in Poynette</p><h2>Between Madison and Portage.</h2></div>
+<iframe class="map" src="https://www.google.com/maps?q=N3303+County+Highway+J,+Poynette,+WI+53955&output=embed" title="Map of Ducts On Call, Poynette, Wisconsin" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<p class="small muted" style="margin-top:.75rem">Ducts On Call Inc. · N3303 County Highway J, Poynette, WI 53955 · Service calls across Dane and Columbia County.</p></div></section>
 '''
 urls.append(render("service-area.html","Service Area – Air Duct Cleaning in Dane & Columbia County, WI | Ducts On Call",
   "Ducts On Call serves Madison, Sun Prairie, Waunakee, Middleton, Verona, Fitchburg, DeForest, Stoughton, Poynette, Portage, Lodi and Columbus, Wisconsin with NADCA-certified air duct and dryer vent cleaning.",
@@ -386,6 +420,214 @@ faq_body = f'''
 urls.append(render("faq.html","Air Duct Cleaning FAQ – Madison WI | Ducts On Call",
   "Do ducts need cleaning? How often? What does it cost? Honest answers from NADCA-certified Ducts On Call in Madison, Wisconsin, based on EPA and NADCA guidance.",
   faq_body, [business_ld(), faq_ld(FAQ)], current="faq"))
+
+
+# ---------- Reviews ----------
+rev_body = f"""
+<section class="page-head"><div class="wrap"><p class="eyebrow">Reviews</p><h1>5.0 stars on every platform that lists us.</h1>
+<p class="lede">Ducts On Call is reviewed on Google, Yelp, Houzz and the BBB. Every listing shows a 5.0 rating. Read them at the source, and if Nick has worked in your home, a review is the most useful thank-you there is.</p></div></section>
+<section class="block"><div class="wrap">
+<blockquote class="quote big">“Very professional and courteous. Nick, Rocko, and Kim from Poynette came out to our house to clean our vents. They were very knowledgeable and took the time to explain everything to us. It was very apparent that they cared about the quality of their work, as well as the health and well-being of my family.”<footer><a href="https://www.houzz.com/professionals/hvac-contractors/madison-wi-us-probr0-bo~t_11814~r_5261457" target="_blank" rel="noopener noreferrer">Houzz review</a>, July 27, 2021</footer></blockquote>
+<div class="cards three" style="margin-top:2.5rem">
+  <a class="card" href="https://www.google.com/maps/search/Ducts+On+Call+duct+cleaning+Wisconsin" target="_blank" rel="noopener noreferrer"><h3>Google</h3><p>5.0 rating across our Google Business listings (Sun Prairie, Waunakee and Poynette), 38 reviews combined as of October 2026.</p><span class="more">Read on Google Maps →</span></a>
+  <a class="card" href="https://www.yelp.com/biz/ducts-on-call-sun-prairie-2" target="_blank" rel="noopener noreferrer"><h3>Yelp</h3><p>5.0 rating. Claimed profile with 61 job photos.</p><span class="more">Read on Yelp →</span></a>
+  <a class="card" href="https://www.bbb.org/us/wi/poynette/profile/duct-cleaning/ducts-on-call-inc-0694-1000030177" target="_blank" rel="noopener noreferrer"><h3>Better Business Bureau</h3><p>A+ rating. Ducts On Call Inc., Poynette, Wisconsin.</p><span class="more">View BBB profile →</span></a>
+</div>
+<div class="note" style="margin-top:2.5rem"><strong>Had Nick out to your home?</strong> Leave a review on <a href="https://www.google.com/maps/search/Ducts+On+Call+duct+cleaning+Wisconsin" target="_blank" rel="noopener noreferrer">Google</a>, <a href="https://www.yelp.com/biz/ducts-on-call-sun-prairie-2" target="_blank" rel="noopener noreferrer">Yelp</a> or <a href="https://www.bbb.org/us/wi/poynette/profile/duct-cleaning/ducts-on-call-inc-0694-1000030177/customer-reviews" target="_blank" rel="noopener noreferrer">BBB</a>. Mention your town so neighbors can find us.</div>
+</div></section>
+"""
+urls.append(render("reviews.html","Ducts On Call Reviews – 5.0 Stars on Google, Yelp, Houzz & BBB | Madison WI Duct Cleaning",
+  "Read Ducts On Call reviews: 5.0 stars on Google, Yelp and Houzz, BBB A+ rated. NADCA-certified air duct cleaning in Madison, Sun Prairie, Waunakee and surrounding Wisconsin communities.",
+  rev_body, [business_ld(), {"@type":"Review","itemReviewed":{"@id":BASE+"#business"},"reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"author":{"@type":"Person","name":"Houzz customer"},"datePublished":"2021-07-27","reviewBody":"Very professional and courteous. Nick, Rocko, and Kim from Poynette came out to our house to clean our vents. They were very knowledgeable and took the time to explain everything to us. It was very apparent that they cared about the quality of their work, as well as the health and well-being of my family.","url":"https://www.houzz.com/professionals/hvac-contractors/madison-wi-us-probr0-bo~t_11814~r_5261457"}], current="rev"))
+
+# ---------- Gallery ----------
+gal_body = f"""
+<section class="page-head"><div class="wrap"><p class="eyebrow">Before &amp; after</p><h1>What's inside a return duct, and what it looks like afterward.</h1>
+<p class="lede">Real photos from a Madison job. Return ducts pull air from every room back to the furnace, so they collect the most debris and are the most skipped by rushed cleaners.</p></div></section>
+<section class="block"><div class="wrap">
+<div class="ba large">
+  <figure><img src="./assets/job-01-before.jpg" alt="Inside a return duct before cleaning: heavy grey dust, lint and debris coating every surface" width="1200" height="800"><figcaption>Before. Years of dust, pet hair and drywall debris on every surface of the return.</figcaption></figure>
+  <figure><img src="./assets/job-01-after.jpg" alt="Inside the same return duct after cleaning: bare, clean sheet metal" width="1200" height="800"><figcaption>After. Bare sheet metal after brushing and air-washing under 5,000 CFM negative pressure.</figcaption></figure>
+</div>
+<div class="prose narrow" style="margin-top:2.5rem">
+<h2>How a result like this happens</h2>
+<p>The furnace is sealed and the system placed under negative pressure, so the vacuum is pulling the whole time. Each run is agitated with rotating brushes and compressed air to break debris loose, and the vacuum carries it out of the house. Every register and grill is removed and washed by hand. Nothing is sprayed over dirt to hide it.</p>
+<p>Nick photographs the inside of the system before and after on request, so you can see the same view you see here, in your own home.</p>
+<p><a class="btn" href="tel:{TEL}">Call or text {PHONE} for a free inspection</a></p>
+</div>
+</div></section>
+"""
+urls.append(render("gallery.html","Air Duct Cleaning Before & After Photos – Madison WI | Ducts On Call",
+  "Real before and after photos from a Madison, Wisconsin air duct cleaning by NADCA-certified Ducts On Call: a return duct caked in dust, then bare clean metal after negative-pressure cleaning.",
+  gal_body, [business_ld(), {"@type":"ImageGallery","name":"Air duct cleaning before and after, Madison WI","image":[BASE+"assets/job-01-before.jpg",BASE+"assets/job-01-after.jpg"]}]))
+
+# ---------- Commercial ----------
+com_body = f"""
+<section class="page-head"><div class="wrap grid">
+  <div><p class="eyebrow">Commercial &amp; industrial · Madison, WI</p><h1>Commercial duct cleaning for offices, rentals and facilities.</h1>
+  <p class="lede">Ducts On Call is listed with NADCA for both residential and commercial work. Rental turnovers, offices, daycares, clinics, restaurants and light industrial, scheduled around your hours.</p>
+  <div class="actions"><a class="btn big" href="tel:{TEL}">Call or text {PHONE}</a></div></div>
+  <figure class="hero-img"><img src="./assets/process-vacuum.jpg" alt="Technician connecting a large vacuum hose to a duct opening" width="1024" height="768"></figure>
+</div></section>
+<section class="block"><div class="wrap narrow prose">
+<h2>Who we work with</h2>
+<ul><li><strong>Property managers and landlords:</strong> duct and dryer vent cleaning at turnover, portfolio scheduling, written documentation for files.</li>
+<li><strong>Offices and clinics:</strong> after-hours cleaning of supply and return systems, HEPA filtration of occupied air, minimal disruption.</li>
+<li><strong>Restaurants and commercial kitchens:</strong> kitchen exhaust hood and duct cleaning to reduce grease fire risk.</li>
+<li><strong>Daycares, schools and churches:</strong> air quality assessments and cleaning where sensitive occupants are a concern.</li>
+<li><strong>Light industrial:</strong> dust-laden systems in shops and warehouses.</li></ul>
+<h2>Standards we work to</h2>
+<p>NADCA's ACR Standard for Assessment, Cleaning and Restoration of HVAC systems defines what a proper cleaning includes: source removal under negative pressure, access to every component, and verification afterward. Nick is a NADCA-certified Air Systems Cleaning Specialist, and Ducts On Call has been a NADCA member since 2022.</p>
+<h2>Documentation</h2>
+<p>Before-and-after photos, a written scope of what was cleaned, and indoor air quality or mycotoxin test results where testing was performed. Useful for tenant files, insurance and compliance.</p>
+<h2>Getting a quote</h2>
+<p>Commercial work is quoted after a walkthrough. Send square footage, number of air handlers and any known issues to <a href="mailto:ductsoncall@gmail.com">ductsoncall@gmail.com</a>, or call or text <a href="tel:{TEL}">{PHONE}</a>.</p>
+</div></section>
+"""
+urls.append(render("commercial.html","Commercial Duct Cleaning Madison WI – Offices, Rentals, Restaurants | Ducts On Call",
+  "NADCA-listed commercial and industrial air duct cleaning in Madison, Wisconsin: offices, rental turnovers, daycares, clinics, restaurant hood cleaning. After-hours scheduling, HEPA filtration, documentation. Call (608) 906-1008.",
+  com_body, [business_ld(), {"@type":"Service","name":"Commercial duct cleaning","serviceType":"Commercial HVAC duct cleaning","provider":{"@id":BASE+"#business"},"areaServed":{"@type":"AdministrativeArea","name":"Dane County and Columbia County, Wisconsin"},"url":BASE+"commercial.html"}], current="com"))
+
+# ---------- Guides ----------
+GUIDES = [
+ dict(slug="air-duct-cleaning-cost-madison", title="What Does Air Duct Cleaning Cost in Madison, WI? (2026)", h1="What air duct cleaning costs in Madison, and what drives the price",
+  desc="Air duct cleaning cost in Madison, Wisconsin explained: realistic ranges, what changes the price, why the $99 whole-house special is a bait-and-switch, and how Ducts On Call quotes.",
+  body="""
+<p class="lede">The honest answer is that a proper whole-system cleaning of an average Madison home is a several-hundred-dollar job, and anything advertised for $99 is not a whole-system cleaning.</p>
+<h2>What a real cleaning involves</h2>
+<p>A complete cleaning means the furnace and every supply and return run are placed under negative pressure, agitated, and vacuumed out; every register and grill is removed and washed; and the blower compartment and plenums are cleaned. That takes a properly equipped crew several hours. Per-vent pricing, add-ons for the furnace or AC coil, and a dryer vent are the usual components of a quote.</p>
+<h2>What moves the price</h2>
+<ul><li><strong>Number of vents and returns.</strong> A 1,200 sq ft ranch and a 3,000 sq ft two-story with two zones are different jobs.</li>
+<li><strong>Furnace and coil.</strong> Cleaning the blower and the evaporator coil adds time but is where a lot of the dust actually sits.</li>
+<li><strong>Condition.</strong> Post-renovation drywall dust, pet hair, or a previously uncleaned 40-year-old system take longer.</li>
+<li><strong>Access.</strong> Finished basements and tight mechanical rooms slow the work.</li>
+<li><strong>Add-ons.</strong> Odor elimination, bio-growth treatment, and dryer vent cleaning.</li></ul>
+<h2>The $99 special</h2>
+<p>Low advertised prices are a lead-generation tactic. The crew arrives, finds "mold" or "problems" and the price multiplies, or they vacuum at the registers for 30 minutes and leave the trunk lines untouched. The EPA warns homeowners about companies that make sweeping claims about health benefits or recommend duct cleaning as a routine part of maintenance, and NADCA explicitly advises against blow-and-go pricing.</p>
+<h2>How Ducts On Call quotes</h2>
+<p>Dryer vent cleaning is a flat $175. Air duct cleaning is quoted per system after a free inspection, so you see the number before anything starts, and if the ducts don't need cleaning, Nick says so and leaves. No per-vent surprises on the day.</p>
+<p><a class="btn" href="tel:{TEL}">Call or text {PHONE} for a quote</a></p>
+"""),
+ dict(slug="signs-air-ducts-need-cleaning", title="7 Signs Your Air Ducts Need Cleaning (and 3 That Don't Mean What You Think)", h1="7 signs your air ducts need cleaning, and 3 that are commonly misread",
+  desc="Do your air ducts need cleaning? Seven real indicators based on EPA and NADCA guidance, three false alarms, and what to do next. From NADCA-certified Ducts On Call, Madison WI.",
+  body="""
+<p class="lede">The EPA's position is simple: clean ducts when there is visible mold, vermin, or excessive debris being released into the home. Here is what that looks like in a real house.</p>
+<h2>Seven real signs</h2>
+<ol><li><strong>Visible dust blowing from registers</strong> when the system starts, or dust streaks on the wall or ceiling around supply vents.</li>
+<li><strong>Visible mold growth</strong> on the inside of hard-surface ducts or on the furnace, coil or plenum. Confirm with a lab if unsure; many things look like mold.</li>
+<li><strong>Evidence of rodents or insects</strong>: droppings, nesting material or odor from vents.</li>
+<li><strong>A recent renovation</strong> that produced drywall or sawdust while the system was running.</li>
+<li><strong>A musty or burning-dust smell</strong> every time the furnace runs, especially after summer.</li>
+<li><strong>You just bought the home</strong> and have no record of the system ever being cleaned. Pull a register and look.</li>
+<li><strong>Filters load up unusually fast</strong>, which points to a dirty return side feeding the filter.</li></ol>
+<h2>Three false alarms</h2>
+<ul><li><strong>"It's been X years."</strong> Time alone is not a reason. Inspect, then decide.</li>
+<li><strong>Allergy symptoms.</strong> The EPA has not found that duct cleaning prevents health problems. Dirty ducts can be a factor, but so can humidity, carpet, pets and the filter you're using. Test before you clean.</li>
+<li><strong>A phone or door-to-door offer.</strong> An unsolicited "special" is a sales tactic, not a sign your ducts are dirty.</li></ul>
+<h2>What to do next</h2>
+<p>Pull one supply register and one return grill and look with a flashlight. If what you see matches the list above, book an inspection. Ducts On Call inspects for free and will tell you if cleaning is not warranted.</p>
+<p><a class="btn" href="tel:{TEL}">Call or text {PHONE}</a></p>
+"""),
+ dict(slug="dryer-vent-fire-safety", title="Dryer Vent Fire Safety: What Wisconsin Homeowners Should Check", h1="Dryer vent fire safety: the five-minute check every homeowner should do",
+  desc="Lint is the leading factor in residential clothes dryer fires. A five-minute dryer vent check, warning signs, and when to get the vent professionally cleaned. Ducts On Call, Madison WI, $175 flat.",
+  body="""
+<p class="lede">The U.S. Fire Administration reports that failure to clean is the leading factor contributing to clothes dryer fires in residential buildings. The fix is cheap and fast.</p>
+<h2>Why dryer vents catch fire</h2>
+<p>Lint is fine, dry and highly flammable. The dryer's lint screen catches most of it, but a steady stream passes through into the vent. Over months it packs the duct, airflow drops, the dryer runs hotter and longer, and the heating element can ignite the lint. Long runs, multiple elbows, foil or plastic flexible duct, and vents that exit through the roof are the highest risk.</p>
+<h2>The five-minute check</h2>
+<ol><li><strong>Dry time.</strong> If a normal load needs more than one cycle, airflow is restricted.</li>
+<li><strong>Heat.</strong> Is the top of the dryer or the laundry room noticeably hot during a cycle?</li>
+<li><strong>Exterior hood.</strong> Run the dryer and go outside. You should feel strong airflow and the flap should open fully. Lint around the hood is a bad sign.</li>
+<li><strong>Behind the dryer.</strong> Pull it out. Is the transition duct crushed, kinked, or made of white plastic or thin foil? Replace with rigid or semi-rigid metal.</li>
+<li><strong>Smell.</strong> A burning smell during a cycle means stop and investigate.</li></ol>
+<h2>When to call</h2>
+<p>If any check fails, or if the vent has never been cleaned, book a professional cleaning. Ducts On Call cleans the full run from the dryer to the exterior hood for a flat $175, checks the transition duct, and confirms airflow at the exit. Yearly is the right interval for most Wisconsin homes.</p>
+<p><a class="btn" href="../dryer-vent-cleaning.html">Dryer vent cleaning details</a> <a class="btn ghost" href="tel:{TEL}">Call or text {PHONE}</a></p>
+"""),
+ dict(slug="duct-cleaning-after-renovation-or-moving-in", title="Should You Clean the Ducts After a Renovation or When You Buy a Home?", h1="Duct cleaning after a renovation or when you move in: what to check",
+  desc="Two situations where duct cleaning is usually worth it: after construction dust and when buying a home with an unknown history. What to inspect and when to skip it. Ducts On Call, Madison WI.",
+  body="""
+<p class="lede">Most of the time, a duct system does not need cleaning on a schedule. Two situations are the exception more often than not.</p>
+<h2>After a renovation</h2>
+<p>Drywall sanding, demolition and flooring work put a very fine mineral dust into the air. If the furnace or air conditioner was running during the work, that dust was pulled into the returns and distributed through every supply run. It settles slowly and keeps re-entering the air for months. The tell is a chalky film on the inside of registers and a dusty smell on the first cold day.</p>
+<p>The cheapest protection is prevention: turn the system off during dusty work and seal the returns. If that didn't happen, a cleaning after the project closes is usually justified, and the furnace filter should be replaced immediately.</p>
+<h2>When you buy a home</h2>
+<p>You rarely know whether the previous owners had pets, smoked, renovated, or had water damage. Before you move furniture in is the easiest time to clean, because the house is empty and the registers are accessible. Pull two or three registers and a return grill and look with a flashlight. Debris, pet hair, or a musty odor from the returns is a reason to clean; bare metal is a reason not to.</p>
+<h2>Water damage changes the question</h2>
+<p>A finished basement that flooded, a slow leak near the furnace, or an air conditioner that drained poorly can seed growth in the return side and the coil. Here testing comes first: it is cheap to find out whether there is biological growth before deciding how to treat it. The EPA notes that cleaning alone does not fix a moisture problem; the source has to be corrected.</p>
+<p><a class="btn" href="tel:{TEL}">Call or text {PHONE} for a free inspection</a></p>
+"""),
+ dict(slug="mold-in-air-ducts", title="Mold in Air Ducts: What It Means and What Actually Works", h1="Mold in air ducts: what it means, what testing shows, and what actually works",
+  desc="Is there mold in your air ducts? How to tell, when to test, why spraying biocide over dirt doesn't work, and the EPA-backed approach. By Nick Bellino, author of Molds and Mycotoxins in Air Ducts.",
+  body="""
+<p class="lede">Mold in a duct system is a moisture story first. Finding it is a reason to look for water, not just a reason to clean.</p>
+<h2>Where it grows</h2>
+<p>Sheet metal ducts are a poor surface for mold unless they are dirty and damp. The usual locations are the air conditioner's evaporator coil and drain pan, the plenum directly after it, insulated or lined ducts that have gotten wet, and returns in damp basements. Dust is the food; condensation or a leak is the water.</p>
+<h2>How to tell</h2>
+<p>Discoloration alone proves little; many deposits look like mold. The EPA suggests having a sample analyzed by a laboratory if you are unsure. Indoor air and surface sampling can also tell you whether spore levels indoors differ from outdoors, and mycotoxin testing adds another layer where sensitive occupants are involved. Nick tests and reports what the results show; he does not diagnose health conditions.</p>
+<h2>What does not work</h2>
+<p>Spraying a biocide or sealant over dirty ductwork. The EPA notes that no chemical biocides are registered for use in bare sheet metal ducts, and sealants applied over debris trap it rather than remove it. If the moisture source is not fixed, growth comes back.</p>
+<h2>What does</h2>
+<ol><li>Fix the water: coil drainage, insulation, humidity, leaks.</li>
+<li>Mechanically remove the debris under negative pressure, so the food source is gone.</li>
+<li>Clean the coil, pan and blower.</li>
+<li>Where growth was confirmed, a bio-growth treatment appropriate for the surface.</li>
+<li>Re-test if the stakes warrant it.</li></ol>
+<p>Nick Bellino wrote a book on exactly this: <a href="https://a.co/d/d6XJZ6S" target="_blank" rel="noopener noreferrer">Molds and Mycotoxins in Air Ducts: The Hidden Dangers</a> (2025).</p>
+<p><a class="btn" href="../indoor-air-quality.html">Indoor air quality testing</a> <a class="btn ghost" href="tel:{TEL}">Call or text {PHONE}</a></p>
+"""),
+]
+for g in GUIDES:
+    body = f"""
+<section class="page-head"><div class="wrap narrow"><p class="eyebrow">Homeowner guide</p><h1>{g['h1']}</h1>
+<p class="small muted">By <a href="https://ductsoncall-hub.github.io/nick-bellino/" target="_blank" rel="noopener noreferrer">Nick Bellino</a>, NADCA ASCS · Ducts On Call, Madison WI · Updated {TODAY}</p></div></section>
+<section class="block"><div class="wrap narrow prose">{g['body'].replace('{TEL}',TEL).replace('{PHONE}',PHONE)}
+<hr style="border:0;border-top:1px solid var(--line);margin:2.5rem 0">
+<p class="small muted">Sources: U.S. EPA, <a href="https://www.epa.gov/indoor-air-quality-iaq/should-you-have-air-ducts-your-home-cleaned" target="_blank" rel="noopener noreferrer">Should You Have the Air Ducts in Your Home Cleaned?</a> · NADCA, <a href="https://nadca.com/homeowners" target="_blank" rel="noopener noreferrer">Homeowner resources</a> · U.S. Fire Administration, <a href="https://www.usfa.fema.gov/prevention/home-fires/prevent-fires/appliances/clothes-dryers/" target="_blank" rel="noopener noreferrer">Clothes dryer fire safety</a>.</p>
+<p class="small"><a href="./index.html">← All guides</a></p>
+</div></section>
+"""
+    ld = [business_ld(), {"@type":"Article","headline":g['title'],"description":g['desc'],"author":{"@type":"Person","name":"Nick Bellino","url":"https://ductsoncall-hub.github.io/nick-bellino/"},"publisher":{"@id":BASE+"#business"},"datePublished":TODAY,"dateModified":TODAY,"image":BASE+"assets/og-ductsoncall.jpg","mainEntityOfPage":BASE+f"guides/{g['slug']}.html"},
+          {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":BASE},{"@type":"ListItem","position":2,"name":"Guides","item":BASE+"guides/index.html"},{"@type":"ListItem","position":3,"name":g['title'],"item":BASE+f"guides/{g['slug']}.html"}]}]
+    urls.append(render(f"guides/{g['slug']}.html", g['title']+" | Ducts On Call", g['desc'], body, ld, current="guides", sub=True))
+
+gi_body = f"""
+<section class="page-head"><div class="wrap"><p class="eyebrow">Homeowner guides</p><h1>Read before you book anyone, including us.</h1>
+<p class="lede">Plain-English guides written by Nick Bellino, NADCA-certified Air Systems Cleaning Specialist and author of five books on indoor air. Sourced to the EPA, NADCA and the U.S. Fire Administration.</p></div></section>
+<section class="block"><div class="wrap"><div class="cards three">
+{"".join(f'<a class="card" href="./{g["slug"]}.html"><h3>{g["title"]}</h3><p>{g["desc"]}</p><span class="more">Read →</span></a>' for g in GUIDES)}
+</div>
+<p class="note" style="margin-top:2.5rem">Want the deeper science? Nick's blog, <a href="https://ductsoncall-hub.github.io/" target="_blank" rel="noopener noreferrer">Indoor Air Science Notes</a>, has 100+ cited articles on mold, mycotoxins, particulate matter and healthy homes.</p>
+</div></section>
+"""
+urls.append(render("guides/index.html","Homeowner Guides – Air Duct & Dryer Vent Cleaning, Madison WI | Ducts On Call",
+  "Honest homeowner guides from NADCA-certified Ducts On Call, Madison WI: duct cleaning cost, signs ducts need cleaning, dryer vent fire safety, post-renovation cleaning, mold in ducts.",
+  gi_body, [business_ld(), {"@type":"CollectionPage","name":"Homeowner guides","url":BASE+"guides/index.html"}], current="guides", sub=True))
+
+# ---------- llms.txt ----------
+open(os.path.join(OUT,"llms.txt"),"w").write(f"""# Ducts On Call Inc.
+
+> NADCA-certified air duct cleaning, dryer vent cleaning and indoor air quality testing in Madison, Wisconsin and surrounding Dane and Columbia County communities. Owner-operated by Nick Bellino, NADCA ASCS, author of five books on mold and indoor air. Free inspections. Dryer vent cleaning $175 flat; duct cleaning quoted per system.
+
+Phone: (608) 906-1008 (call or text, 7 AM–7 PM) · Email: ductsoncall@gmail.com · Address: N3303 County Highway J, Poynette, WI 53955 · Main site: https://ductsoncall.com
+
+## Services
+- [Air duct cleaning]({BASE}air-duct-cleaning.html)
+- [Dryer vent cleaning]({BASE}dryer-vent-cleaning.html)
+- [Indoor air quality & mycotoxin testing]({BASE}indoor-air-quality.html)
+- [Commercial & industrial]({BASE}commercial.html)
+
+## Service area
+{chr(10).join(f"- [{n}, WI]({BASE}areas/{s}.html)" for s,n,*_ in CITIES)}
+
+## Guides
+{chr(10).join(f"- [{g['title']}]({BASE}guides/{g['slug']}.html)" for g in GUIDES)}
+
+## Proof
+- [Reviews]({BASE}reviews.html) · [Before & after]({BASE}gallery.html) · [FAQ]({BASE}faq.html)
+- NADCA listing: https://nadca.com/find-a-professional/ducts-call · BBB: https://www.bbb.org/us/wi/poynette/profile/duct-cleaning/ducts-on-call-inc-0694-1000030177
+- About the owner: https://ductsoncall-hub.github.io/nick-bellino/
+""")
 
 # ---------- sitemap / robots ----------
 open(os.path.join(OUT,"sitemap.xml"),"w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f'  <url><loc>{u}</loc><lastmod>{TODAY}</lastmod></url>\n' for u in urls) + '</urlset>\n')
