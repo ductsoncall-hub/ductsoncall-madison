@@ -597,7 +597,7 @@ gi_body = f"""
 <section class="block"><div class="wrap"><div class="cards three">
 {"".join(f'<a class="card" href="./{g["slug"]}.html"><h3>{g["title"]}</h3><p>{g["desc"]}</p><span class="more">Read →</span></a>' for g in GUIDES)}
 </div>
-<p class="note" style="margin-top:2.5rem">Want the deeper science? Nick's blog, <a href="https://ductsoncall-hub.github.io/" target="_blank" rel="noopener noreferrer">Indoor Air Science Notes</a>, has 100+ cited articles on mold, mycotoxins, particulate matter and healthy homes.</p>
+<p class="note" style="margin-top:2.5rem">Want the deeper science? Nick's blog, <a href="https://ductsoncall-hub.github.io/" target="_blank" rel="noopener noreferrer">Indoor Air Science Notes</a>, has cited articles on mold, mycotoxins, particulate matter and healthy homes.</p>
 </div></section>
 """
 urls.append(render("guides/index.html","Homeowner Guides – Air Duct & Dryer Vent Cleaning, Madison WI | Ducts On Call",
