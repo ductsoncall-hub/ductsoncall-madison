@@ -158,3 +158,7 @@ section.block.alt { background: var(--bg-2); }
 .lead-actions .small { color: #c9d3df; font-size: var(--text-sm); }
 .lead-form button.btn { cursor: pointer; font-family: var(--font-display); }
 @media (max-width: 640px) { .lead-grid { grid-template-columns: 1fr; } .lead-form { padding: 1.25rem; } }
+
+/* Light lead form (on white pages) */
+.lead-form.light { margin-top: 0; background: var(--navy); border-color: var(--navy); }
+.page-head .lead-form.light { align-self: start; }

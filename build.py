@@ -135,7 +135,7 @@ FOOT = '''
     </div>
     <div>
       <p class="small"><strong>Services</strong></p>
-      <p class="small"><a href="{rel}air-duct-cleaning.html">Air duct cleaning</a><br><a href="{rel}dryer-vent-cleaning.html">Dryer vent cleaning</a><br><a href="{rel}indoor-air-quality.html">Indoor air quality &amp; mycotoxin testing</a><br><a href="{rel}commercial.html">Commercial &amp; industrial</a><br><a href="{rel}gallery.html">Before &amp; after</a><br><a href="{rel}guides/index.html">Homeowner guides</a><br><a href="{rel}reviews.html">Reviews</a></p>
+      <p class="small"><a href="{rel}air-duct-cleaning.html">Air duct cleaning</a><br><a href="{rel}dryer-vent-cleaning.html">Dryer vent cleaning</a><br><a href="{rel}indoor-air-quality.html">Indoor air quality &amp; mycotoxin testing</a><br><a href="{rel}commercial.html">Commercial &amp; industrial</a><br><a href="{rel}gallery.html">Before &amp; after</a><br><a href="{rel}guides/index.html">Homeowner guides</a><br><a href="{rel}checklist.html">Free furnace-season checklist</a><br><a href="{rel}reviews.html">Reviews</a></p>
     </div>
     <div>
       <p class="small"><strong>Service area</strong></p>
@@ -312,7 +312,7 @@ home_body = f'''
       <a class="card" href="./guides/signs-air-ducts-need-cleaning.html"><h3>7 signs your air ducts need cleaning</h3><p>And three that are commonly misread. Based on EPA and NADCA guidance.</p><span class="more">Read →</span></a>
       <a class="card" href="./guides/dryer-vent-fire-safety.html"><h3>Dryer vent fire safety</h3><p>Why lint is the leading factor in dryer fires and the five-minute check.</p><span class="more">Read →</span></a>
     </div>
-    <p style="margin-top:1.5rem"><a href="./guides/index.html">All guides →</a></p>
+    <p style="margin-top:1.5rem"><a href="./guides/index.html">All guides →</a> · <a href="./checklist.html">Free furnace-season checklist (PDF) →</a></p>
   </div>
 </section>
 
@@ -659,6 +659,66 @@ Phone: (608) 906-1008 (call or text, 7 AM–7 PM) · Email: ductsoncall@gmail.co
 """)
 
 
+# ---------- Checklist lead magnet ----------
+PDF = BASE + "assets/furnace-season-indoor-air-checklist.pdf"
+chk_body = f"""
+<section class="page-head"><div class="wrap grid">
+  <div><p class="eyebrow">Free download · Wisconsin homeowners</p><h1>The Furnace-Season Indoor Air Checklist</h1>
+  <p class="lede">Ten things to check before your furnace runs all winter: filter fit, CO alarms, radon, humidity, the dryer vent, what to look for inside a register, and when a professional should look. Two pages, based on EPA, Wisconsin DHS and U.S. Fire Administration guidance.</p>
+  <ul class="trust"><li>Written by a NADCA ASCS</li><li>Every item sourced</li><li>No sales pitch inside</li></ul></div>
+  <div>
+    <form class="lead-form light" action="https://formsubmit.co/ductsoncall@gmail.com" method="POST">
+      <input type="hidden" name="_subject" value="Checklist download: new homeowner lead">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="{BASE}checklist-thanks.html">
+      <input type="hidden" name="_autoresponse" value="Thanks for downloading the Furnace-Season Indoor Air Checklist from Ducts On Call. Your copy: {PDF} . If anything on the list raises a flag, call or text Nick at (608) 906-1008 for a free inspection. He answers personally, 7 AM to 7 PM.">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+      <input type="hidden" name="source" value="checklist">
+      <h3>Send me the checklist</h3>
+      <div class="lead-grid">
+        <label>Name<input type="text" name="name" required autocomplete="name"></label>
+        <label>Email<input type="email" name="email" required autocomplete="email"></label>
+        <label class="full">Town<input type="text" name="town" required placeholder="Madison, Sun Prairie, Waunakee…"></label>
+      </div>
+      <div class="lead-actions"><button class="btn big" type="submit">Email me the PDF</button><span class="small">One email with the download link. Nick may follow up once; no list, no spam.</span></div>
+    </form>
+  </div>
+</div></section>
+<section class="block"><div class="wrap narrow prose">
+<h2>What is on the list</h2>
+<ol>
+<li>Replace the furnace filter and check the fit (EPA's MERV 13 guidance)</li>
+<li>Test every carbon monoxide alarm</li>
+<li>Start a radon test; about 1 in 10 Wisconsin homes is elevated</li>
+<li>Check indoor humidity against EPA's 30 to 50% range</li>
+<li>Clean the dryer vent</li>
+<li>Run the furnace and smell the first cycle</li>
+<li>Look inside a supply register and a return grille</li>
+<li>Confirm bath and kitchen fans vent outdoors</li>
+<li>Clear the mechanical room</li>
+<li>Schedule the professional checks</li>
+</ol>
+<p>Each item explains what to look for and why it matters, with sources listed on the back page. Prefer not to leave an email? <a href="tel:{TEL}">Call or text {PHONE}</a> and Nick will walk you through it.</p>
+</div></section>
+"""
+urls.append(render("checklist.html","Free Furnace-Season Indoor Air Checklist for Wisconsin Homeowners | Ducts On Call",
+  "Free two-page checklist: ten things to check before your furnace runs all winter, from filter fit and CO alarms to radon, humidity and what to look for inside a register. By NADCA-certified Nick Bellino, Madison WI.",
+  chk_body, [business_ld(), {"@type":"DigitalDocument","name":"The Furnace-Season Indoor Air Checklist","url":PDF,"author":{"@type":"Person","name":"Nick Bellino"},"publisher":{"@id":BASE+"#business"},"inLanguage":"en-US"}]))
+
+chk_thanks = f"""
+<section class="page-head"><div class="wrap narrow"><p class="eyebrow">On its way</p><h1>Check your inbox. Or grab it right here.</h1>
+<p class="lede">The download link is in your email. You can also open it now:</p>
+<p><a class="btn big" href="{PDF}" target="_blank" rel="noopener">Open the checklist (PDF)</a></p>
+<p style="margin-top:2rem">If anything on the list raises a flag, Nick will take a look for free. Call or text <a href="tel:{TEL}">{PHONE}</a>, 7 AM to 7 PM.</p>
+<div class="cards two" style="margin-top:2rem">
+  <a class="card" href="./guides/signs-air-ducts-need-cleaning.html"><h3>7 signs your air ducts need cleaning</h3><p>And three that are commonly misread.</p><span class="more">Read →</span></a>
+  <a class="card" href="./guides/dryer-vent-fire-safety.html"><h3>Dryer vent fire safety</h3><p>The five-minute check.</p><span class="more">Read →</span></a>
+</div>
+</div></section>
+"""
+render("checklist-thanks.html","Your checklist | Ducts On Call","Your Furnace-Season Indoor Air Checklist download.", chk_thanks, [business_ld()])
+
 # ---------- Thank you ----------
 thanks_body = f"""
 <section class="page-head"><div class="wrap narrow"><p class="eyebrow">Request received</p><h1>Thanks. Nick has your request.</h1>
@@ -675,6 +735,8 @@ render("thanks.html","Request received | Ducts On Call", "Your free inspection r
 
 # ---------- sitemap / robots ----------
 open(os.path.join(OUT,"sitemap.xml"),"w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f'  <url><loc>{u}</loc><lastmod>{TODAY}</lastmod></url>\n' for u in urls) + '</urlset>\n')
+for _f in ('thanks.html','checklist-thanks.html'):
+    tp=os.path.join(OUT,_f); t=open(tp).read().replace('<meta name="viewport"','<meta name="robots" content="noindex"><meta name="viewport"',1); open(tp,'w').write(t)
 tp=os.path.join(OUT,'thanks.html'); t=open(tp).read().replace('<meta name="viewport"','<meta name="robots" content="noindex"><meta name="viewport"',1); open(tp,'w').write(t)
 open(os.path.join(OUT,"robots.txt"),"w").write(f"User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n")
 open(os.path.join(OUT,".nojekyll"),"w").write("")
