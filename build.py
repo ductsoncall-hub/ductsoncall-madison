@@ -20,6 +20,16 @@ CITIES = [
  ("portage","Portage","Columbia","The Columbia County seat on the Wisconsin River, about 35 miles north of Madison.", ["Poynette","Lodi","Columbus","DeForest"]),
  ("lodi","Lodi","Columbia","A small city northwest of Madison near Lake Wisconsin.", ["Poynette","Waunakee","Middleton","Portage"]),
  ("columbus","Columbus","Columbia","East of Sun Prairie along US-151, with many older homes and farmsteads.", ["Sun Prairie","Poynette","Portage","DeForest"]),
+ ("cottage-grove","Cottage Grove","Dane","East of Madison off I-94, a growing village with many homes built since the 1990s.", ["Madison","Sun Prairie","Stoughton","McFarland"]),
+ ("oregon","Oregon","Dane","South of Madison on US-14, a village of established and newer subdivisions.", ["Fitchburg","Verona","Stoughton","McFarland"]),
+ ("mcfarland","McFarland","Dane","Southeast of Madison on Lake Waubesa, with lakeside homes and finished basements.", ["Madison","Stoughton","Oregon","Cottage Grove"]),
+ ("monona","Monona","Dane","Surrounded by Madison on Lake Monona, with mostly mid-century ranch and split-level homes.", ["Madison","McFarland","Cottage Grove","Fitchburg"]),
+ ("cross-plains","Cross Plains","Dane","West of Middleton on US-14 in the Driftless hills.", ["Middleton","Mount Horeb","Verona","Lodi"]),
+ ("mount-horeb","Mount Horeb","Dane","Southwest of Madison on US-18/151, with older village homes and newer edge subdivisions.", ["Verona","Cross Plains","Middleton","Fitchburg"]),
+ ("windsor","Windsor","Dane","North of Madison next to DeForest, with newer construction along the I-39/90 corridor.", ["DeForest","Sun Prairie","Waunakee","Poynette"]),
+ ("marshall","Marshall","Dane","Northeast of Sun Prairie on WI-19, a village of older homes and surrounding farmsteads.", ["Sun Prairie","Columbus","Cottage Grove","Madison"]),
+ ("wisconsin-dells","Wisconsin Dells","Columbia","North of Portage on the Wisconsin River, with year-round homes, rentals and hospitality properties.", ["Portage","Poynette","Lodi","Pardeeville"]),
+ ("pardeeville","Pardeeville","Columbia","East of Portage on Park Lake, a small village in the middle of Columbia County.", ["Portage","Poynette","Columbus","Wisconsin Dells"]),
 ]
 
 FAQ = [
@@ -93,8 +103,27 @@ FOOT = '''
     </div>
     <div class="cta-actions">
       <a class="btn big" href="tel:{tel}">{phone}</a>
-      <a class="btn ghost" href="https://ductsoncall.com/get-in-touch" target="_blank" rel="noopener noreferrer">Request an appointment online</a>
+      <a class="btn ghost" href="sms:{tel}?&body=Hi%20Nick%2C%20I%27d%20like%20a%20free%20duct%20inspection.%20My%20town%20is%20">Text Nick instead</a>
     </div>
+  </div>
+  <div class="wrap">
+    <form class="lead-form" action="https://formsubmit.co/ductsoncall@gmail.com" method="POST">
+      <input type="hidden" name="_subject" value="New inspection request from ductsoncall-madison site">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="{base}thanks.html">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+      <input type="hidden" name="page" value="{canon}">
+      <h3>Or request your free inspection here</h3>
+      <div class="lead-grid">
+        <label>Name<input type="text" name="name" required autocomplete="name"></label>
+        <label>Phone<input type="tel" name="phone" required autocomplete="tel" placeholder="(608) 555-0100"></label>
+        <label>Town<input type="text" name="town" required placeholder="Madison, Sun Prairie, Waunakee…"></label>
+        <label>What do you need?<select name="service"><option>Air duct cleaning</option><option>Dryer vent cleaning ($175)</option><option>Indoor air quality / mold testing</option><option>Commercial</option><option>Not sure – inspection first</option></select></label>
+        <label class="full"><span>Anything Nick should know? <span class="opt">(optional)</span></span><textarea name="notes" rows="2" placeholder="Dust from vents, musty smell when furnace runs, just moved in, pets…"></textarea></label>
+      </div>
+      <div class="lead-actions"><button class="btn big" type="submit">Request free inspection</button><span class="small">Nick replies personally, usually the same day. No call center, no spam.</span></div>
+    </form>
   </div>
 </section>
 <footer class="site-footer">
@@ -166,7 +195,7 @@ def render(fn, title, desc, body, ld, current="", place="Madison, Wisconsin", su
     cur = {k: (' aria-current="page"' if current == k else '') for k in ["adc","dvc","iaq","area","faq","com","guides","rev"]}
     html = HEAD.format(title=title, desc=desc, canon=canon, base=BASE, rel=rel, place=place, ogimg=(ogimg or BASE+"assets/og-ductsoncall.jpg"), ld=json.dumps({"@context": "https://schema.org", "@graph": ld}, ensure_ascii=False), tel=TEL, phone=PHONE,
                        c_adc=cur["adc"], c_dvc=cur["dvc"], c_iaq=cur["iaq"], c_area=cur["area"], c_faq=cur["faq"], c_com=cur["com"], c_guides=cur["guides"], c_rev=cur["rev"])
-    html += body + FOOT.format(tel=TEL, phone=PHONE, rel=rel, citylinks=citylinks(rel))
+    html += body + FOOT.format(tel=TEL, phone=PHONE, rel=rel, citylinks=citylinks(rel), base=BASE, canon=canon)
     path = os.path.join(OUT, fn); os.makedirs(os.path.dirname(path), exist_ok=True)
     open(path, "w").write(html)
     return canon
@@ -629,8 +658,24 @@ Phone: (608) 906-1008 (call or text, 7 AM–7 PM) · Email: ductsoncall@gmail.co
 - About the owner: https://ductsoncall-hub.github.io/nick-bellino/
 """)
 
+
+# ---------- Thank you ----------
+thanks_body = f"""
+<section class="page-head"><div class="wrap narrow"><p class="eyebrow">Request received</p><h1>Thanks. Nick has your request.</h1>
+<p class="lede">He answers personally, usually the same day during business hours (7 AM to 7 PM). If it is urgent, call or text <a href="tel:{TEL}">{PHONE}</a> now.</p>
+<p>While you wait, two guides most homeowners find useful:</p>
+<div class="cards two">
+  <a class="card" href="./guides/signs-air-ducts-need-cleaning.html"><h3>7 signs your air ducts need cleaning</h3><p>And three that are commonly misread.</p><span class="more">Read →</span></a>
+  <a class="card" href="./guides/air-duct-cleaning-cost-madison.html"><h3>What air duct cleaning costs in Madison</h3><p>Realistic ranges and the $99 special trap.</p><span class="more">Read →</span></a>
+</div>
+<p style="margin-top:2rem"><a class="btn ghost" href="./index.html">Back to home</a></p>
+</div></section>
+"""
+render("thanks.html","Request received | Ducts On Call", "Your free inspection request has been received. Nick Bellino replies personally, usually the same day.", thanks_body, [business_ld()])
+
 # ---------- sitemap / robots ----------
 open(os.path.join(OUT,"sitemap.xml"),"w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f'  <url><loc>{u}</loc><lastmod>{TODAY}</lastmod></url>\n' for u in urls) + '</urlset>\n')
+tp=os.path.join(OUT,'thanks.html'); t=open(tp).read().replace('<meta name="viewport"','<meta name="robots" content="noindex"><meta name="viewport"',1); open(tp,'w').write(t)
 open(os.path.join(OUT,"robots.txt"),"w").write(f"User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n")
 open(os.path.join(OUT,".nojekyll"),"w").write("")
 print(f"built {len(urls)} pages")
