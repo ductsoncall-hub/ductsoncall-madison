@@ -32,6 +32,14 @@ CITIES = [
  ("pardeeville","Pardeeville","Columbia","East of Portage on Park Lake, a small village in the middle of Columbia County.", ["Portage","Poynette","Columbus","Wisconsin Dells"]),
 ]
 
+GUIDE_LINKS = [
+ ("signs-air-ducts-need-cleaning","7 signs your air ducts need cleaning","and three that are commonly misread"),
+ ("air-duct-cleaning-cost-madison","What air duct cleaning costs in Madison","what drives the price, and the $99 special trap"),
+ ("dryer-vent-fire-safety","Dryer vent fire safety","the five-minute check"),
+ ("duct-cleaning-after-renovation-or-moving-in","Duct cleaning after a renovation or a move","when it is usually worth it"),
+ ("mold-in-air-ducts","Mold in air ducts","what it means and what actually works"),
+]
+
 FAQ = [
  ("Do my air ducts actually need cleaning?",
   "Not always, and we will tell you if they don't. The EPA says duct cleaning is reasonable when there is visible mold growth inside ducts or on HVAC components, when ducts are infested with vermin, or when they are clogged with excessive dust and debris that is released into the home. Every job starts with a free inspection so you can see what is in the system before deciding."),
@@ -429,6 +437,12 @@ for slug, name, county, blurb, neigh in CITIES:
 <p>Nick Bellino, the owner. He is a NADCA-certified Air Systems Cleaning Specialist, holds an Indoor Air Quality Technician certification, and has written five books on mold, mycotoxins and indoor air quality. He answers the phone, performs the inspection and does the cleaning himself. The business is licensed, insured and BBB A+ rated.</p>
 <h2>An honest first step</h2>
 <p>Every {name} job starts with a free inspection. If your ducts don't need cleaning, Nick will tell you. The EPA recommends duct cleaning when there is visible mold, vermin, or excessive debris being released into the home, and that is the standard he works to.</p>
+<h2>Before you book: guides for {name} homeowners</h2>
+<p>Read these first, whoever you hire. They are sourced to the EPA, NADCA and the U.S. Fire Administration.</p>
+<ul>
+{"".join(f'<li><a href="../guides/{gs}.html">{gt}</a>: {gd}.</li>' for gs, gt, gd in GUIDE_LINKS)}
+<li><a href="../checklist.html">Free Furnace-Season Indoor Air Checklist</a>: ten things to check before the furnace runs all winter.</li>
+</ul>
 <h2>Nearby</h2>
 <p>We also serve {", ".join(f'<a href="./{[c[0] for c in CITIES if c[1]==x][0]}.html">{x}</a>' for x in neigh)} and the rest of greater Madison.</p>
 </div></section>
@@ -613,6 +627,7 @@ for g in GUIDES:
 <section class="block"><div class="wrap narrow prose">{g['body'].replace('{TEL}',TEL).replace('{PHONE}',PHONE)}
 <hr style="border:0;border-top:1px solid var(--line);margin:2.5rem 0">
 <p class="small muted">Sources: U.S. EPA, <a href="https://www.epa.gov/indoor-air-quality-iaq/should-you-have-air-ducts-your-home-cleaned" target="_blank" rel="noopener noreferrer">Should You Have the Air Ducts in Your Home Cleaned?</a> · NADCA, <a href="https://nadca.com/homeowners" target="_blank" rel="noopener noreferrer">Homeowner resources</a> · U.S. Fire Administration, <a href="https://www.usfa.fema.gov/prevention/home-fires/prevent-fires/appliances/clothes-dryers/" target="_blank" rel="noopener noreferrer">Clothes dryer fire safety</a>.</p>
+<p class="small muted">Ducts On Call serves {", ".join(f'<a href="../areas/{c[0]}.html">{c[1]}</a>' for c in CITIES)}, Wisconsin. <a href="../checklist.html">Get the free Furnace-Season Indoor Air Checklist</a>.</p>
 <p class="small"><a href="./index.html">← All guides</a></p>
 </div></section>
 """
