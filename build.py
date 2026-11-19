@@ -275,8 +275,8 @@ home_body = f'''
     <div>
       <p class="eyebrow">Who shows up</p>
       <h2>Nick Bellino, owner. NADCA-certified, and he wrote the book on it. Five, actually.</h2>
-      <p>Nick holds NADCA's Air Systems Cleaning Specialist (ASCS) certification and an Indoor Air Quality Technician certification, and has written five books on mold, mycotoxins and indoor air quality. He answers the phone, performs the inspection and does the cleaning himself.</p>
-      <p><a class="btn ghost" href="https://ductsoncall-hub.github.io/nick-bellino/" target="_blank" rel="noopener noreferrer">More about Nick and his books</a></p>
+      <p>Nick holds NADCA's Air Systems Cleaning Specialist (ASCS) certification and an Indoor Air Quality Technician certification, and has written five books on mold, mycotoxins and indoor air quality, along with doctoral-level research including the 2026 paper <a href="https://ductsoncall-hub.github.io/nick-bellino/papers/Bellino-2026-Latency-Cascade-Theory.pdf" target="_blank" rel="noopener noreferrer">Latency Cascade Theory</a>. He answers the phone, performs the inspection and does the cleaning himself.</p>
+      <p><a class="btn ghost" href="https://ductsoncall-hub.github.io/nick-bellino/" target="_blank" rel="noopener noreferrer">More about Nick and his books</a> <a class="btn ghost" href="https://ductsoncall-hub.github.io/nick-bellino/research.html" target="_blank" rel="noopener noreferrer">His research</a></p>
     </div>
     <div class="proof">
       <a href="https://nadca.com/find-a-professional/ducts-call" target="_blank" rel="noopener noreferrer"><strong>NADCA</strong><span>Certified personnel: Nick Bellino, ASCS · member since 02/11/2022</span></a>
@@ -618,6 +618,35 @@ GUIDES = [
 <li>Re-test if the stakes warrant it.</li></ol>
 <p>Nick Bellino wrote a book on exactly this: <a href="https://a.co/d/d6XJZ6S" target="_blank" rel="noopener noreferrer">Molds and Mycotoxins in Air Ducts: The Hidden Dangers</a> (2025).</p>
 <p><a class="btn" href="../indoor-air-quality.html">Indoor air quality testing</a> <a class="btn ghost" href="tel:{TEL}">Call or text {PHONE}</a></p>
+"""),
+ dict(slug="water-leak-48-hour-clock", title="Water Leak or Flooded Basement? The 48-Hour Clock Every Wisconsin Homeowner Should Know", h1="After a leak or a wet basement: the 48-hour clock, and the four delays that decide how bad it gets",
+  desc="What to do in the first two days after a water leak, burst pipe or wet basement in the Madison area: the EPA's 24–48 hour drying window, why the furnace spreads the problem, and which popular 'fixes' waste the clock. By Nick Bellino, NADCA ASCS.",
+  body="""
+<p class="lede">The EPA's advice after water damage is to dry wet materials within 24 to 48 hours. Almost everything that goes wrong afterward, from a musty basement to a gutted one, traces back to how much time passed before the house was dry.</p>
+<h2>Why the clock matters more than the amount of water</h2>
+<p>A small leak that runs for three months does more damage than a burst pipe that is dried out in two days. In a 2026 theoretical paper, <a href="https://ductsoncall-hub.github.io/nick-bellino/papers/Bellino-2026-Latency-Cascade-Theory.pdf" target="_blank" rel="noopener noreferrer">Latency Cascade Theory</a>, Nick Bellino describes four delays that add up after a water event. Each one is a place where a homeowner can save or lose weeks.</p>
+<ol><li><strong>Wetting.</strong> The time from the leak to conditions that let mold grow. The EPA's 24 to 48 hour window is this first clock.</li>
+<li><strong>Detection.</strong> The time until somebody notices. Slow leaks behind showers, sweating cold-air returns in finished ceilings, and crawlspaces nobody enters can run for months.</li>
+<li><strong>Decision.</strong> The time between noticing and deciding to act. Cost worries, insurance questions, landlord and tenant disagreements, and waiting on test results all live here.</li>
+<li><strong>Remediation.</strong> The time from the decision to the house actually being dry and clean, done right the first time.</li></ol>
+<p>The longer those four add up to, the worse and more expensive the outcome, and the cost climbs faster the longer it runs. A leak handled in the first week is a dry-out with fans. The same leak at month six is demolition.</p>
+<h2>The first 48 hours</h2>
+<ol><li><strong>Stop the water.</strong> Shut the supply valve, tarp the roof, redirect the downspout. Nothing else matters until the source stops.</li>
+<li><strong>Turn the furnace or air conditioner fan off</strong> if the wet area is near a return, the furnace, or ductwork, until the area is dry. A forced-air system pulls air from the dampest parts of the house and sends it to every room.</li>
+<li><strong>Get the water out and the air moving.</strong> Wet-vac standing water, pull up wet carpet pad, run fans and a dehumidifier. In a Wisconsin basement in summer, a dehumidifier is not optional.</li>
+<li><strong>Open what is wet.</strong> Baseboards off, a few inches of wet drywall out, cabinet toe-kicks off. Trapped water behind a finished surface does not dry on its own.</li>
+<li><strong>Measure, do not guess.</strong> A moisture meter on the framing tells you when you are done. Dry to the touch is not dry.</li>
+<li><strong>Write down the date.</strong> If you rent, report it to the landlord in writing. If you own, your insurer will ask. The date marks when detection ended and the decision clock started.</li></ol>
+<h2>What does not shorten the clock</h2>
+<p>Some things feel like action but do not dry a single board. Done instead of finding and fixing the water, they consume the decision window while appearing to address it:</p>
+<ul><li><strong>Air spore tests</strong> ordered before anyone has found the source. The EPA's position is that if mold is visible, sampling is usually unnecessary.</li>
+<li><strong>Fogging or spraying a biocide</strong> over wet or dirty surfaces. If the moisture is not fixed, growth returns; the EPA notes no chemical biocides are registered for bare sheet-metal ducts.</li>
+<li><strong>A scheduled duct cleaning</strong> while the basement is still wet. Clean the system after the house is dry, if inspection shows it needs it.</li></ul>
+<p>Testing has a real place when it changes a decision, for example to confirm growth inside a duct system before deciding how to treat it. The question to ask about any step, including anything Ducts On Call proposes, is simple: which of the four delays does this shorten?</p>
+<h2>When the HVAC system is involved</h2>
+<p>If water reached the furnace, the air conditioner coil or drain pan, a return trunk, or any insulated or lined duct, have the system inspected once the area is dry. Wet duct liner and insulation usually have to be replaced, not cleaned. Ducts On Call inspects for free, tells you plainly whether cleaning is warranted, and does the moisture investigation before anything is sold.</p>
+<p><a class="btn" href="tel:{TEL}">Call or text {PHONE}</a> <a class="btn ghost" href="./mold-in-air-ducts.html">Mold in air ducts: what works</a></p>
+<p class="small muted">Further reading: <a href="https://ductsoncall-hub.github.io/2026/11/18/latency-cascade-theory-explained/" target="_blank" rel="noopener noreferrer">Latency Cascade Theory, explained</a> on Indoor Air Science Notes · <a href="https://www.epa.gov/mold/brief-guide-mold-moisture-and-your-home" target="_blank" rel="noopener noreferrer">EPA, A Brief Guide to Mold, Moisture and Your Home</a>.</p>
 """),
 ]
 for g in GUIDES:
